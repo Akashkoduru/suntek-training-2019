@@ -1,0 +1,67 @@
+#include<stdio.h>
+#include<stdlib.h>
+void addd();
+void nnode();
+struct node
+{
+    int data;
+    struct node* link;
+};
+struct node* root=NULL;
+int main()
+{
+    int choice;
+    while(1)
+    {
+        printf("1.Adding a node\n2.nth node from the end\n3.end\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1: addd();
+                    break;
+            case 2: nnode();
+                    break;
+            case 3: exit(0);
+        }
+    }
+    return 0;
+}
+void addd()
+{
+    struct node* temp;
+    temp=(struct node*)malloc(sizeof(struct node));
+    temp->link=NULL;
+    printf("\nEnter the data\n");
+    scanf("%d",&temp->data);
+    if(root==NULL)
+        root=temp;
+    else
+    {
+        struct node* p;
+        p=root;
+        while(p->link!=NULL)
+        {
+            p=p->link;
+        }
+        p->link=temp;
+    }
+}
+void nnode()
+{
+    int n,count=1,i;
+    printf("Enter the position from the end\n");
+    scanf("%d",&n);
+    struct node* p;
+    p=root;
+    while(p->link!=NULL)
+    {
+        p=p->link;
+        count++;
+    }
+    p=root;
+    for(i=1;i<count-n+1;i++)
+    {
+        p=p->link;
+    }
+    printf("Nth node from the end is %d\n",p->data);
+}

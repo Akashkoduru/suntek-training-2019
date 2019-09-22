@@ -1,0 +1,30 @@
+#include<string.h>
+#include<stdio.h>
+int main()
+{
+    int i,j,k;
+    char string[20],c;
+    gets(string);
+    j=strlen(string)-1;
+    for(i=0;i<=j;i++)
+    {
+        if(string[i]=='a'||string[i]=='e'||string[i]=='i'||string[i]=='o'||string[i]=='u')
+        continue;
+        else
+        {
+            c=string[i];
+            for(k=j;k>i;k--)
+            {
+                if(string[j]=='a'||string[j]=='e'||string[j]=='i'||string[j]=='o'||string[j]=='u')
+                j--;
+                else
+                break;
+            }        
+            string[i]=string[j];
+            string[j]=c;
+            j--;
+        }
+    }
+    printf("%s",string);
+    return 0;
+}

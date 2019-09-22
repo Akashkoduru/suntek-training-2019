@@ -1,0 +1,55 @@
+#include <stdio.h>
+#include<string.h>
+#include<stdlib.h>
+struct count
+{
+    char s;
+    int c;
+}p[2];
+int main()
+{
+    int i,j,k;
+    char st1[10],st2[10],temp;
+    gets(st1);
+    gets(st2);
+    if(strlen(st1)!=strlen(st2))
+    {
+        printf("Not anagrams");
+    }
+    else{
+    for(i=0;st1[i]!='\0';i++)
+    {
+        for(j=i+1;st1[j]!='\0';j++)
+        {
+            if((int)st1[i]>(int)st1[j])
+            {
+                temp=(char)st1[i];
+                st1[i]=(char)st1[j];
+                st1[j]=temp;
+            }
+        }
+    }
+    for(i=0;st2[i]!='\0';i++)
+    {
+        for(j=i+1;st2[j]!='\0';j++)
+        {
+            if((int)st2[i]>(int)st2[j])
+            {
+                temp=(char)st2[i];
+                st2[i]=(char)st2[j];
+                st2[j]=temp;
+            }
+        }
+    }
+    for(i=0;i<strlen(st1);i++)
+    {
+        if(st1[i]!=st2[i])
+        break;
+    }
+    if(i==strlen(st1))
+    printf("Anagrams");
+    else
+    printf("Not Anagrams");
+    }
+    return 0;
+}

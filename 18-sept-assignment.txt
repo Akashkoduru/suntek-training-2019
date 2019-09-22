@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include<string.h>
+#include<conio.h>
+int main()
+{
+    
+    int i,j=1,c,temp2;
+    char st[20],count[20],temp1;
+    gets(st);
+    for(i=0;st[i]!='\0';i++)
+    {
+        c=1;
+        for(j=0;st[j]!='\0';j++)
+        {
+            if(st[i]==st[j])
+            {
+                count[i]=c++;
+            }
+        }
+    }
+    for(i=0;st[i]!='\0';i++)
+    {
+        for(j=0;j<i;j++)
+        {
+            if(st[i]==st[j])
+            break;
+        }
+        if(j==i)
+        printf("%c-%d\n",st[i],count[i]);
+       
+    }
+      
+    return 0;
+}

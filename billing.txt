@@ -1,0 +1,229 @@
+#include <stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int p[20][3],c=0;
+float dp=15;
+char uname[]="griet",pass[]="12345";
+void home();
+void admin();
+void billing();
+void update_u_p()
+{
+    int s;
+    char oldu[20],newu[20],oldp[20],newp[20];
+    printf("change 1.username or 2.password\n");
+    scanf("%d",&s);
+    if(s==1)
+    {   
+        printf("enter old password\n");
+        scanf("%s",oldp);
+        if(strcmp(pass,oldp)==0)
+        {
+            printf("enter new username\n");
+            scanf("%s",newu);
+            strcpy(uname,newu);
+            printf("username updated\n");
+        }
+        else
+        {
+            printf("password incorrect");
+        }
+    }
+    if(s==2)
+    {   
+        printf("enter old password\n");
+        scanf("%s",oldp);
+        if(strcmp(pass,oldp)==0)
+        {
+            printf("enter new password\n");
+            scanf("%s",newp);
+            strcpy(pass,newp);
+            printf("password updated");
+        }
+        else
+        {
+            printf("password incorrect");
+        }
+    }
+}
+void display()
+{
+    int i,j;
+    printf("product_id\tcost_per_unit\tstock_available\n");
+    for(i=0;i<20;i++)
+    {
+        for(j=0;j<=2;j++)
+        {
+            if(j==1)
+            printf("\t%0.2f\t",(float)p[i][j]);
+            else
+            printf("\t%d\t",p[i][j]);
+        }
+        printf("\n");
+    }
+}
+void update_cost()
+{
+    int nc,id;
+    printf("enter the pid");
+    scanf("%d",&id);
+    printf("enter new cost of pid %d\n",id);
+    scanf("%d",&nc);
+    p[id][1]=nc;
+}
+void update_stock()
+{
+    int ns,id;
+    printf("enter the pid to update stock");
+    scanf("%d",&id);
+    printf("enter the new stock");
+    scanf("%d",&ns);
+    p[id][2]=ns;
+}
+void update_dp()
+{
+    float ndp;
+    printf("enter the new discount\n");
+    scanf("%f",&ndp);
+    dp=ndp;
+    printf("new discount is %f\n",dp);
+}
+void home()
+{
+    int ch;
+    while(1)
+    {
+        printf("\t\tWelcome to wallmart\nLogin as\n1.admin\n2.billing agent\n");
+        scanf("%d",&ch);
+        if(ch==1)
+        {
+            admin();
+            break;
+        }
+        else if(ch==2)
+        {
+            billing();
+        }
+    }
+}
+void billing()
+{
+    int i,j,pc,pid,q,a[100][4];
+    char r;
+    float subt=0,total=0;
+    printf("Welcome\n");
+    printf("enter the product count\n");
+    scanf("%d",&pc);
+    printf("Enter product ID followed by quantity purchased of %d products:\n",pc);
+    for(i=0;i<pc;i++)
+    {
+        scanf("%d",&pid);
+        a[i][0]=pid;
+        scanf("%d",&q);
+        a[i][1]=q;
+        a[i][2]=(float)p[pid][1];
+        a[i][3]=(float)q*p[pid][1];
+        if(q>p[pid][2])
+        {
+            printf("available stock is %d\ntry again later\n",p[pid][2]);
+            billing();
+        }
+        else if(q>0)
+        {
+            p[pid][2]=p[pid][2]-q;
+        }
+    }
+    printf("***************************************************************\n");
+    printf("\t\tthank you for visiting wallmart!!\n\n");
+    printf("\tDate:\t\ttime:\t\tbill_number:%d\n\n",++c);
+    printf("Product ID\t\tQuantity\tPrice per Qty\tPrice\n\n");
+    for(i=0;i<pc;i++)
+    {
+        for(j=0;j<4;j++)
+        {
+            if(j>=2)
+            {
+                printf("\t%0.2f\t",(float)a[i][j]);
+            }
+            else
+                printf("\t%d\t",a[i][j]);
+        }
+        subt=subt+a[i][3];
+        printf("\n");
+    }
+    if(subt>=(float)5000)
+        dp=dp+10;
+    else if(subt>=(float)3000)
+        dp=dp+5;
+    printf("\n");
+    total=subt-((dp/100)*(subt));
+    printf("\t\t\t\t\t\tsubtotal:%0.2f\n\n",subt);
+    printf("\t\t\t\t\t\tdiscount:%0.f%%\n\n",dp);
+    printf("\t\t\t\t\t\t   total:%0.2f\n\n",total);
+    printf("***************************************************************\n\n");
+    printf("want to continue y/n\n");
+    scanf("%s",&r);
+    if(r=='y')
+        billing();
+    else if(r=='n')
+        exit(1);
+}
+void admin()
+{
+    char username[20],password[20],r;
+    int c;
+    printf("kindly enter the username\n");
+    scanf("%s",username);
+    printf("kindly enter the password\n");
+    scanf("%s",password);
+    if(strcmp(username,uname)==0&&strcmp(password,pass)==0)
+    {
+        
+        while(1)
+        {
+            printf("Welcome, %s\n",uname);
+            printf("1. Update username/password\n2. update cost\n3.update stock\n4.update discount percentage\n5.display\n6.logout\n");
+            scanf("%d",&c);
+            switch(c)
+            {
+                case 1:update_u_p();
+                       break;
+                case 2:update_cost();
+                       break;
+                case 3:update_stock();
+                       break;
+                case 4:update_dp();
+                       break;
+                case 5:display();
+                       break;
+                case 6:home();
+                       break;
+            }
+            printf("want to continue y/n\n");
+            scanf("%s",&r);
+            if(r=='y')
+                admin();
+            else if(r=='n')
+                exit(1);
+        }
+    }
+    else
+    {
+        printf("the details are incorrect\nrenter the details\n");
+        admin();
+    }
+    
+}
+
+int main()
+{
+    int i;
+    for(i=0;i<20;i++)
+    {
+        p[i][0]=i;
+        p[i][1]=(float)(i*10+100);
+        p[i][2]=20;
+    }
+    home();
+    return 0;
+}
